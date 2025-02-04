@@ -27,10 +27,15 @@ import '@fontsource/poppins/700.css';
 // style + assets
 import 'assets/scss/style.scss';
 import reportWebVitals from 'reportWebVitals';
+import { apiSlice } from 'api/apiSlice';
 
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
-const store = configureStore({ reducer });
+const store = configureStore({ 
+  reducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(apiSlice.middleware), // Add apiSlice middleware
+});
 
 // ==============================|| REACT DOM RENDER  ||============================== //
 

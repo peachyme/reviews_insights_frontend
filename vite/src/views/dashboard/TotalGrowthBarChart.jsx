@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
+import { useGetCategorySentimentDistributionQuery } from "api/apiSlice";
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -18,7 +19,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 
 // chart data
-import chartData from './chart-data/total-growth-bar-chart';
+// import chartData from './chart-data/total-growth-bar-chart';
 
 const status = [
   {
@@ -37,7 +38,103 @@ const status = [
 
 // ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
 
-const TotalGrowthBarChart = ({ isLoading }) => {
+const TotalGrowthBarChart = () => {
+  const { data: data, isLoading: isLoading, error: error } = useGetCategorySentimentDistributionQuery();
+  
+  const [goodReviews, setGoodReviews] = useState([]);
+  const [badReviews, setBadReviews] = useState([]);
+  const [categories, setCategories] = useState([])
+  
+  React.useEffect(() => {
+    if (data) {
+      const cats = data.map((d) => d.category);
+      const good = data.map((d) => d.good_reviews);
+      const bad = data.map((d) => d.bad_reviews);
+      console.log("cats=", cats);
+      console.log("good=", good);
+      console.log("bad=", bad);
+      setCategories(cats);
+      setGoodReviews(good);
+      setBadReviews(bad);
+    }
+  }, [data]);
+  
+  const chartData = {
+    height: 480,
+    type: 'bar',
+    options: {
+      chart: {
+        id: 'bar-chart',
+        stacked: true,
+        toolbar: {
+          show: true
+        },
+        zoom: {
+          enabled: true
+        }
+      },
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            legend: {
+              position: 'bottom',
+              offsetX: -10,
+              offsetY: 0
+            }
+          }
+        }
+      ],
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '50%'
+        }
+      },
+      xaxis: {
+        type: 'category',
+        categories: categories
+      },
+      legend: {
+        show: true,
+        fontFamily: `'Poppins', sans-serif`,
+        position: 'bottom',
+        offsetX: 20,
+        labels: {
+          useSeriesColors: false
+        },
+        markers: {
+          width: 16,
+          height: 16,
+          radius: 5
+        },
+        itemMargin: {
+          horizontal: 15,
+          vertical: 8
+        }
+      },
+      fill: {
+        type: 'solid'
+      },
+      dataLabels: {
+        enabled: false
+      },
+      grid: {
+        show: true
+      }
+    },
+    series: [
+      {
+        name: 'Good Reviews',
+        data: goodReviews
+      },
+      {
+        name: 'Bad Reviews',
+        data: badReviews
+      }
+    ]
+  };
+  
   const [value, setValue] = React.useState('today');
   const theme = useTheme();
 
@@ -49,11 +146,13 @@ const TotalGrowthBarChart = ({ isLoading }) => {
   const primaryDark = theme.palette.primary.dark;
   const secondaryMain = theme.palette.secondary.main;
   const secondaryLight = theme.palette.secondary.light;
+  const errorMain = theme.palette.error.main;
+  const primaryMain = theme.palette.primary.main;
 
   React.useEffect(() => {
     const newChartData = {
       ...chartData.options,
-      colors: [primary200, primaryDark, secondaryMain, secondaryLight],
+      colors: [primaryMain, errorMain],
       xaxis: {
         labels: {
           style: {
@@ -77,24 +176,21 @@ const TotalGrowthBarChart = ({ isLoading }) => {
     if (!isLoading) {
       ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData);
     }
-  }, [primary200, primaryDark, secondaryMain, secondaryLight, primary, divider, isLoading, grey500]);
+  }, [primaryMain, errorMain, errorMain, errorMain, errorMain, divider, isLoading, grey500]);
 
   return (
     <>
       {isLoading ? (
         <SkeletonTotalGrowthBarChart />
       ) : (
-        <MainCard>
+        <MainCard sx={{ mb: 3}} >
           <Grid container spacing={gridSpacing}>
             <Grid item xs={12}>
               <Grid container alignItems="center" justifyContent="space-between">
                 <Grid item>
                   <Grid container direction="column" spacing={1}>
                     <Grid item>
-                      <Typography variant="subtitle2">Total Growth</Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography variant="h3">$2,324.00</Typography>
+                      <Typography variant="h4">Reviews sentiment distribution by category</Typography>
                     </Grid>
                   </Grid>
                 </Grid>

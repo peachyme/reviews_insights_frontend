@@ -10,23 +10,25 @@ export default function themePalette(theme) {
       black: theme.colors?.darkPaper
     },
     primary: {
+      light: theme.colors?.successLight,
+      main: theme.colors?.successMain,
+      dark: theme.colors?.successDark,
+      200: theme.colors?.success200,
+      800: theme.colors?.successDark
+    },
+    secondary: {
       light: theme.colors?.primaryLight,
       main: theme.colors?.primaryMain,
       dark: theme.colors?.primaryDark,
       200: theme.colors?.primary200,
       800: theme.colors?.primary800
     },
-    secondary: {
-      light: theme.colors?.secondaryLight,
-      main: theme.colors?.secondaryMain,
-      dark: theme.colors?.secondaryDark,
-      200: theme.colors?.secondary200,
-      800: theme.colors?.secondary800
-    },
     error: {
       light: theme.colors?.errorLight,
       main: theme.colors?.errorMain,
-      dark: theme.colors?.errorDark
+      dark: theme.colors?.errorDark,
+      200: theme.colors?.errorLight,
+      800: theme.colors?.errorDark
     },
     orange: {
       light: theme.colors?.orangeLight,
@@ -39,10 +41,10 @@ export default function themePalette(theme) {
       dark: theme.colors?.warningDark
     },
     success: {
-      light: theme.colors?.successLight,
-      200: theme.colors?.success200,
-      main: theme.colors?.successMain,
-      dark: theme.colors?.successDark
+      light: theme.colors?.warningLight,
+      200: theme.colors?.warning200,
+      main: theme.colors?.warningMain,
+      dark: theme.colors?.warningDark
     },
     grey: {
       50: theme.colors?.grey50,

@@ -1,12 +1,13 @@
-import dashboard from './dashboard';
-import pages from './pages';
-import utilities from './utilities';
-import other from './other';
+import insights from './insights';
+import analytics from './analytics';
+import sentiments from './sentiments';
+import generation from './generation';
+// import other from './other';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-  items: [dashboard, pages, utilities, other]
+  items: [insights, analytics, sentiments, generation]
 };
 
 export default menuItems;

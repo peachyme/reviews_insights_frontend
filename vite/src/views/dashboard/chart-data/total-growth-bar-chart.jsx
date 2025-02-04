@@ -1,5 +1,28 @@
 // ==============================|| DASHBOARD - TOTAL GROWTH BAR CHART ||============================== //
 
+import { useGetCategorySentimentDistributionQuery } from "api/apiSlice";
+import { useState } from "react";
+
+const { data: data, isLoading: isLoading, error: error } = useGetCategorySentimentDistributionQuery();
+
+const [goodReviews, setGoodReviews] = useState([]);
+const [badReviews, setBadReviews] = useState([]);
+const [categories, setCategories] = useState([])
+
+useEffect(() => {
+  if (data) {
+    const cats = data.map((d) => d.category);
+    const good = data.map((d) => d.good_reviews);
+    const bad = data.map((d) => d.bad_reviews);
+    console.log("cats=", cats);
+    console.log("good=", good);
+    console.log("bad=", bad);
+    setCategories(cats);
+    setGoodReviews(good);
+    setBadReviews(bad);
+  }
+}, [data]);
+
 const chartData = {
   height: 480,
   type: 'bar',
@@ -34,11 +57,11 @@ const chartData = {
     },
     xaxis: {
       type: 'category',
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      categories: categories
     },
     legend: {
       show: true,
-      fontFamily: `'Roboto', sans-serif`,
+      fontFamily: `'Poppins', sans-serif`,
       position: 'bottom',
       offsetX: 20,
       labels: {
@@ -66,20 +89,12 @@ const chartData = {
   },
   series: [
     {
-      name: 'Investment',
-      data: [35, 125, 35, 35, 35, 80, 35, 20, 35, 45, 15, 75]
+      name: 'Good Reviews',
+      data: goodReviews
     },
     {
-      name: 'Loss',
-      data: [35, 15, 15, 35, 65, 40, 80, 25, 15, 85, 25, 75]
-    },
-    {
-      name: 'Profit',
-      data: [35, 145, 35, 35, 20, 105, 100, 10, 65, 45, 30, 10]
-    },
-    {
-      name: 'Maintenance',
-      data: [0, 0, 75, 0, 0, 115, 0, 0, 0, 0, 150, 0]
+      name: 'Bad Reviews',
+      data: badReviews
     }
   ]
 };
