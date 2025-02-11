@@ -16,3 +16,11 @@ This is the **frontend** of **Review Insights Hub**, a web application that prov
 - **State Management**: Redux Toolkit Query 🗂️ 
 - **API Calls**: Axios 🌐
 - **Charts & Visualization**: MUI charts / Recharts / Chart.js 📈
+
+
+## 👥 Contributors
+
+   💡 Ryad Belarbi
+   🏆 Hadjer Messaoudene
+   ✨ Zaineb Abidi
+   🚀 Ameni Fekki
